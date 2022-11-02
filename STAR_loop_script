@@ -1,0 +1,28 @@
+#!/bin/bash
+
+STAR --genomeLoad LoadAndExit --genomeDir /home/i.muller/MPS-375/MPS-375/UActearly/star_indices_149
+
+
+for prefix in $(cat ID);
+
+do
+echo "now running STAR on ${prefix}"
+
+STAR --runThreadN 40 \
+--runMode alignReads \
+--genomeDir /home/i.muller/MPS-375/MPS-375/UActearly/star_indices_149 \
+--genomeLoad LoadAndKeep \
+--readFilesIn ${prefix}_L001_R1.fastq.gz,${prefix}_L002_R1.fastq.gz","${prefix}_L003_R1.fastq.gz  ${prefix}_L001_R2.$
+--alignEndsType EndToEnd \
+--outSAMtype BAM SortedByCoordinate \
+--sjdbOverhang 149 \
+--readFilesCommand zcat \
+--limitBAMsortRAM 15000000000 \
+--outFileNamePrefix ${prefix}. \
+
+done
+
+STAR --genomeLoad Remove --genomeDir /home/i.muller/MPS-375/MPS-375/UActearly/star_indices_149
+
+wait
+
