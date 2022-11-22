@@ -9,18 +9,23 @@ do
 echo "now running trimmomatic on ${prefix}"
 
 trimmomatic PE -threads 4 \
-${prefix}_L001_R1.fastq.gz ${prefix}_L001_R2.fastq.gz \
-${prefix}_L001_R1.trim.fastq.gz ${prefix}_L001_R1.untrim.fastq.gz ${prefix}_L001_R2.trim.fastq.gz ${prefix}_L001_R2.untrim.fastq.gz \
-ILLUMINACLIP:TruSeq3-PE-2.fa:2:40:15:8:true MINLEN:50 SLIDINGWINDOW:4:20 LEADING:10
+${prefix}_L001_R1_001.fastq.gz ${prefix}_L001_R2_001.fastq.gz \
+${prefix}_L001_R1_001.trim.fastq.gz ${prefix}_L001_R1_001.untrim.fastq.gz ${prefix}_L001_R2_001.trim.fastq.gz ${prefix}_L001_R2_001.untrim.fastq.gz \
+ILLUMINACLIP:TruSeq3-PE-2.fa:2:40:15:8:true MINLEN:50 SLIDINGWINDOW:4:20 LEADING:3
 
 trimmomatic PE -threads 4 \
-${prefix}_L002_R1.fastq.gz ${prefix}_L002_R2.fastq.gz \
-${prefix}_L002_R1.trim.fastq.gz ${prefix}_L002_R1.untrim.fastq.gz ${prefix}_L002_R2.trim.fastq.gz ${prefix}_L002_R2.untrim.fastq.gz \
-ILLUMINACLIP:TruSeq3-PE-2.fa:2:40:15:8:true MINLEN:50 SLIDINGWINDOW:4:20 LEADING:10
+${prefix}_L002_R1_001.fastq.gz ${prefix}_L002_R2_001.fastq.gz \
+${prefix}_L002_R1_001.trim.fastq.gz ${prefix}_L002_R1_001.untrim.fastq.gz ${prefix}_L002_R2_001.trim.fastq.gz ${prefix}_L002_R2_001.untrim.fastq.gz \
+ILLUMINACLIP:TruSeq3-PE-2.fa:2:40:15:8:true MINLEN:50 SLIDINGWINDOW:4:20 LEADING:3
 
 trimmomatic PE -threads 4 \
-${prefix}_L003_R1.fastq.gz ${prefix}_L003_R2.fastq.gz \
-${prefix}_L003_R1.trim.fastq.gz ${prefix}_L003_R1.untrim.fastq.gz ${prefix}_L003_R2.trim.fastq.gz ${prefix}_L003_R2.untrim.fastq.gz \
-ILLUMINACLIP:TruSeq3-PE-2.fa:2:40:15:9:true MINLEN:50 SLIDINGWINDOW:4:20 LEADING:10
+${prefix}_L003_R1_001.fastq.gz ${prefix}_L003_R2_001.fastq.gz \
+${prefix}_L003_R1_001.trim.fastq.gz ${prefix}_L003_R1_001.untrim.fastq.gz ${prefix}_L003_R2_001.trim.fastq.gz ${prefix}_L003_R2_001.untrim.fastq.gz \
+ILLUMINACLIP:TruSeq3-PE-2.fa:2:40:15:9:true MINLEN:50 SLIDINGWINDOW:4:20 LEADING:3
+
+trimmomatic PE -threads 4 \
+${prefix}_L004_R1_001.fastq.gz ${prefix}_L004_R2_001.fastq.gz \
+${prefix}_L004_R1_001.trim.fastq.gz ${prefix}_L004_R1_001.untrim.fastq.gz ${prefix}_L003_R2_001.trim.fastq.gz ${prefix}_L003_R2_001.untrim.fastq.gz \
+ILLUMINACLIP:TruSeq3-PE-2.fa:2:40:15:9:true MINLEN:50 SLIDINGWINDOW:4:20 LEADING:3
 
 done
