@@ -1,0 +1,83 @@
+#!/bin/bash
+
+module load STAR/2.7.10b
+module load samtools/1.8
+module load fastqc/0.11.9
+module load subread/2.0.3
+module load java/jre1.8.0_281
+
+ls -h | awk -F '_' '{print $1"_"$2"_"$3}' | uniq > ID.txt
+
+for prefix in $(cat ID.txt);
+
+do
+
+echo "now running trimmomatic on ${prefix}"
+
+java -jar /net/beegfs/scratch/imuller/Trimmomatic-0.39/trimmomatic-0.39.jar PE -threads 16 \
+${prefix}_L001_R1_001.fastq.gz ${prefix}_L001_R2_001.fastq.gz \
+${prefix}_L001_R1_001.trim.fastq.gz ${prefix}_L001_R1_001.untrim.fastq.gz ${prefix}_L001_R2_001.trim.fastq.gz ${prefix}_L001_R2_001.untrim.fastq.gz \
+ILLUMINACLIP:/net/beegfs/scratch/imuller/Trimmomatic-0.39/adapters/TruSeq3-PE-2.fa:2:40:15:8:true MINLEN:50 SLIDINGWINDOW:4:20 LEADING:3
+
+java -jar /net/beegfs/scratch/imuller/Trimmomatic-0.39/trimmomatic-0.39.jar PE -threads 16 \
+${prefix}_L002_R1_001.fastq.gz ${prefix}_L002_R2_001.fastq.gz \
+${prefix}_L002_R1_001.trim.fastq.gz ${prefix}_L002_R1_001.untrim.fastq.gz ${prefix}_L002_R2_001.trim.fastq.gz ${prefix}_L002_R2_001.untrim.fastq.gz \
+ILLUMINACLIP:/net/beegfs/scratch/imuller/Trimmomatic-0.39/adapters/TruSeq3-PE-2.fa:2:40:15:8:true MINLEN:50 SLIDINGWINDOW:4:20 LEADING:3
+
+#done
+
+echo "Trimmomatic has been completed"
+
+
+# THIS RUNS FASTQC for all files ending with trim.fastq.gz
+
+#for file in $(ls *.trim.fastq.gz);
+
+#do
+
+fastqc -t 8 *.trim.fastq.gz -o QC_output
+
+*done
+
+echo "FastQC has been completed"
+
+# THIS RUNS MULTIQC
+
+sleep 1
+
+multiqc QC_output/*
+
+echo "MultiQC has been completed"
+
+
+for prefix in $(cat ID.txt);
+
+do
+
+echo "now running STAR on ${prefix}"
+
+STAR --runThreadN 16 \
+--runMode alignReads \
+--genomeDir /net/beegfs/scratch/imuller/gencode_index_release42_hg3813 \
+--readFilesIn ${prefix}_L001_R1_001.trim.fastq.gz,${prefix}_L002_R1_001.trim.fastq.gz ${prefix}_L001_R2_001.trim.fastq.gz,${prefix}_L002_R2_001.trim.fastq.gz \
+--alignEndsType EndToEnd \
+--outSAMtype BAM SortedByCoordinate \
+--alignEndsType EndToEnd \
+--outSAMtype BAM SortedByCoordinate \
+--sjdbOverhang 149 \
+--readFilesCommand zcat \
+--outFileNamePrefix ${prefix}.
+
+samtools index -b -@ 16 ${prefix}.Aligned.sortedByCoord.out.bam
+
+done
+
+echo "STAR has completed and bai files created"
+
+###WIP
+#featureCounts -t exon -g gene_id -a /net/beegfs/scratch/imuller/genomereference/gencode.v42.chr_patch_hapl_scaff.annotation.gtf -o exon_counts.txt *.bam
+
+#featureCounts -t gene -g gene_id -a /net/beegfs/scratch/imuller/genomereference/gencode.v42.chr_patch_hapl_scaff.annotation.gtf -o gene_counts.txt *.bam
+
+echo "Feauturecounts has finished"
+
