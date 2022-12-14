@@ -1,6 +1,7 @@
 library(tximport)
 library(readr)
 library(AnnotationDbi)
+library(GenomicFeatures)
 
 setwd("/net/beegfs/scratch/imuller/UAE_fastq_new/UAE120_TCZ/fastq_files_UAE12")
 
