@@ -3,7 +3,7 @@ library(readr)
 library(AnnotationDbi)
 library(GenomicFeatures)
 
-setwd("/net/beegfs/scratch/imuller/UAE_fastq_new/UAE120_TCZ/fastq_files_UAE12")
+setwd("/net/beegfs/scratch/imuller/UAE_fastq_new/UAE120_fastq/fastq_files_UAE12/")
 
 ##	read samples from ID file
 samples <- read.table("ID.txt", header=FALSE)
