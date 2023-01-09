@@ -19,7 +19,7 @@ names(files) <- paste0(samplename[,1])
 ##	make txdb file from GTF then create tx2gene file
 txdb <- makeTxDbFromGFF("/net/beegfs/scratch/imuller/genomereference/gencode.v42.chr_patch_hapl_scaff.annotation.gtf", format="gtf", dataSource = "Hg38 GTF Gencode", organism = "Homo sapiens")
 k <- keys(txdb, keytype = "TXNAME")
-tx2gene <- select(txdb, k, "GENEID, "TXNAME")
+tx2gene <- select(txdb, k, "GENEID", "TXNAME")
 
 #head(tx2gene)
 
