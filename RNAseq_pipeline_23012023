@@ -83,15 +83,26 @@ samtools index -b -@ 16 ${prefix}.Aligned.sortedByCoord.out.bam
 
 fi
 
-done
-
 
 echo "STAR has completed and bai files created"
 
+do
+
+salmon quant --threads 16 \
+--index /net/beegfs/scratch/imuller/genomereference/salmon_index \
+--validateMappings \
+--libType A \
+--gcBias \
+--output /net/beegfs/scratch/imuller/salmon_output_total_14122022/$id \
+-1 ${id}_L001_R1.trim.fastq.gz ${id}_L002_R1.trim.fastq.gz ${id}_L003_R1.trim.fastq.gz /net/beegfs/scratch/imuller/UAE_fastq_oldrun/${id}*R1_001.fastq.gz \
+-2 ${id}_L001_R2.trim.fastq.gz ${id}_L002_R2.trim.fastq.gz ${id}_L003_R2.trim.fastq.gz /net/beegfs/scratch/imuller/UAE_fastq_oldrun/${id}*R2_001.fastq.gz
+
+echo "Salmon has finished"
+
+
+done
 ###WIP
 #featureCounts -t exon -g gene_id -a /net/beegfs/scratch/imuller/genomereference/gencode.v42.chr_patch_hapl_scaff.annotation.gtf -o exon_counts.txt *.bam
-
 #featureCounts -t gene -g gene_id -a /net/beegfs/scratch/imuller/genomereference/gencode.v42.chr_patch_hapl_scaff.annotation.gtf -o gene_counts.txt *.bam
 
-echo "Feauturecounts has finished"
 
