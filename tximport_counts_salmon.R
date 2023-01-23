@@ -7,14 +7,13 @@ setwd("/net/beegfs/scratch/imuller/UAE_fastq_new/UAE120_fastq/fastq_files_UAE12/
 
 ##	read samples from ID file
 samples <- read.table("ID.txt", header=FALSE)
-colnames(samples) <- c("sample")
+colnames(samples) <- "samples"
 
 ##	get files from path
 files <- file.path("salmon_output", samples$sample, "quant.sf")
 samplename <- strsplit(samples$sample, split="_")
 samplename <- matrix(unlist(samplename), ncol=3, byrow=T)
 names(files) <- paste0(samplename[,1])
-
 
 ##	make txdb file from GTF then create tx2gene file
 txdb <- makeTxDbFromGFF("/net/beegfs/scratch/imuller/genomereference/gencode.v42.chr_patch_hapl_scaff.annotation.gtf", format="gtf", dataSource = "Hg38 GTF Gencode", organism = "Homo sapiens")
@@ -32,4 +31,6 @@ txi.salmon$counts<- round(txi.salmon$counts)
 #head(txi.salmon$counts)
 
 ##write csv file
-write.csv(txi.salmon, "counts_UAE120.csv")
+##write.csv(txi.salmon, "counts_UAE120.csv")
+
+saveRDS(txi.salmon, "counts.RDS")
