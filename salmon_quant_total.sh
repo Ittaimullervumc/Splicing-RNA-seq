@@ -1,6 +1,6 @@
 
 #!/bin/bash
-
+module load java/jre1.8.0_281
 
 cd /net/beegfs/scratch/imuller/UAE_fastq_new/UAE90_fastq
 
